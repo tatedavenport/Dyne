@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import NavBar from "./components/navbar";
+import Restaurants from "./components/restaurants";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    restaurants: [
+      { id: 1, title: "Naka Sushi" },
+      { id: 2, title: "Pasta Della Nona" },
+      { id: 3, title: "Giovanni's Pizzeria" },
+    ],
+  };
+
+  constructor(props) {
+    super(props);
+    console.log("App - Constructor");
+  }
+
+  componentDidMount() {
+    console.log("App - Mounted");
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <NavBar />
+        <Restaurants restaurants={this.state.restaurants} />
+      </React.Fragment>
+    );
+  }
 }
 
 export default App;
