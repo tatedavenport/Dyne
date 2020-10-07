@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const PORT = 8080;
 
@@ -22,6 +24,8 @@ module.exports = {
 const restaurantInfoRoutes = require('./routes/restaurantInfo');
 
 //express middleware
+app.use(cors());
+app.use(bodyParser.json());
 app.use('/', restaurantInfoRoutes) //route handler included in routes
 
 //starting the server on PORT
