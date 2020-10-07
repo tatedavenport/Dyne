@@ -12,6 +12,8 @@ class App extends Component {
         wait: "30min",
         rating: 4.5,
         status: "Open Now",
+        img:
+          "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
       },
       {
         id: 2,
@@ -19,6 +21,8 @@ class App extends Component {
         wait: "20min",
         rating: 4.9,
         status: "Closed",
+        img:
+          "https://www.budgetbytes.com/wp-content/uploads/2018/04/The-Best-Weeknight-Pasta-Sauce-plate-H1.jpg",
       },
       {
         id: 3,
@@ -26,6 +30,8 @@ class App extends Component {
         wait: "45min",
         rating: 4.3,
         status: "Closing Soon",
+        img:
+          "https://cdn.loveandlemons.com/wp-content/uploads/2018/09/vegan-pizza-500x375.jpg",
       },
     ],
   };
