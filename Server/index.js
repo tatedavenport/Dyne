@@ -25,8 +25,22 @@ module.exports = {
 //have to require this now due to circular dependency with firebase
 const restaurantInfoRoutes = require('./routes/restaurantInfo');
 
+
+
 //express middleware
-app.use(cors());
+const corsOpts = {
+    origin: '*',
+  
+    methods: [
+      'GET',
+      'POST',
+    ],
+  
+    allowedHeaders: [
+      'Content-Type',
+    ],
+  };
+app.use(cors(corsOpts));
 app.use(bodyParser.json());
 app.use('/', restaurantInfoRoutes) //route handler included in routes
 
