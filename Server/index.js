@@ -39,7 +39,7 @@ const corsOpts = {
     allowedHeaders: [
       'Content-Type',
     ],
-  };
+};
 app.use(cors(corsOpts));
 app.use(bodyParser.json());
 app.use('/', restaurantInfoRoutes) //route handler included in routes
