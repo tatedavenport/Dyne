@@ -3,6 +3,7 @@ import NavBar from "./components/navbar";
 import Restaurants from "./components/restaurants";
 import MenuPage from "./components/menuPage";
 import "./App.css";
+import Axios from "axios";
 
 class App extends Component {
   state = {
@@ -84,6 +85,9 @@ class App extends Component {
 
   componentDidMount() {
     console.log("App - Mounted");
+    Axios.get("localhost:8080/restaurants").then((response) =>
+      console.log(response)
+    );
   }
 
   render() {
