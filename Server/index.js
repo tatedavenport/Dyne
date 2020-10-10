@@ -11,14 +11,16 @@ const omnivoreBaseURL = 'https://api.omnivore.io/1.0';
 //firebase stuff
 const admin = require('firebase-admin');
 const serviceAccount = require('./dyne-b0c3e-c66556202faf.json');
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
+
 const myFirestore = admin.firestore();
+
 module.exports = {
     myFirestore
 }
-
 
 //have to require this now due to circular dependency with firebase
 const restaurantInfoRoutes = require('./routes/restaurantInfo');
