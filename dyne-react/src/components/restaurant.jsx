@@ -17,9 +17,9 @@ class Restaurant extends Component {
 
   render() {
     return (
-      <div className="container m-3">
+      <div className="container">
         {this.props.children}
-        <div className="row">
+        <div className="d-flex justify-content-center">
           <img
             src={this.props.restaurant.img}
             width="400"
@@ -28,14 +28,14 @@ class Restaurant extends Component {
             loading="lazy"
           />
         </div>
-        <div className="row">
-          <div className="col-4 px-0">
+        <div className="d-flex row-auto justify-content-between">
+          <div className="d-flex flex-column">
             <h5>{this.props.restaurant.title}</h5>
             <p className="text-muted small">
               Approx wait time: {this.props.restaurant.wait}
             </p>
           </div>
-          <div className="col-3 text-right">
+          <div className="d-flex flex-column">
             <p className="float-right small">{this.props.restaurant.rating}</p>
             <Rating
               name="half-rating-read"
