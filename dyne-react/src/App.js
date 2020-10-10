@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NavBar from "./components/navbar";
 import Restaurants from "./components/restaurants";
+import MenuPage from "./components/menuPage";
 import "./App.css";
 
 class App extends Component {
@@ -14,7 +15,21 @@ class App extends Component {
         status: "Open Now",
         img:
           "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
+        foodItems: [
+          {
+            id: 1,
+            name: "Lasagna",
+            image:
+              "https://www.365daysofbakingandmore.com/wp-content/uploads/2011/02/Lasagna-FEATURE.jpg",
+            price: 13.0,
+            description:
+              "This is a home-made bolognese lasagna directly from Italy.",
+            category: "Pastas",
+            isPolular: true,
+          },
+        ],
       },
+
       {
         id: 2,
         title: "Pasta Della Nona",
@@ -23,6 +38,19 @@ class App extends Component {
         status: "Closed",
         img:
           "https://www.budgetbytes.com/wp-content/uploads/2018/04/The-Best-Weeknight-Pasta-Sauce-plate-H1.jpg",
+        foodItems: [
+          {
+            id: 1,
+            name: "Lasagna",
+            image:
+              "https://www.365daysofbakingandmore.com/wp-content/uploads/2011/02/Lasagna-FEATURE.jpg",
+            price: 13.0,
+            description:
+              "This is a home-made bolognese lasagna directly from Italy.",
+            category: "Pastas",
+            isPolular: true,
+          },
+        ],
       },
       {
         id: 3,
@@ -32,6 +60,19 @@ class App extends Component {
         status: "Closing Soon",
         img:
           "https://cdn.loveandlemons.com/wp-content/uploads/2018/09/vegan-pizza-500x375.jpg",
+        foodItems: [
+          {
+            id: 1,
+            name: "Lasagna",
+            image:
+              "https://www.365daysofbakingandmore.com/wp-content/uploads/2011/02/Lasagna-FEATURE.jpg",
+            price: 13.0,
+            description:
+              "This is a home-made bolognese lasagna directly from Italy.",
+            category: "Pastas",
+            isPolular: true,
+          },
+        ],
       },
     ],
   };

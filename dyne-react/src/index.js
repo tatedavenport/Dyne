@@ -1,16 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import App from "./App";
+import MenuPage from "./components/menuPage";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+const routing = (
+  <Router>
+    <div>
+      <Link to="/menuPage">Link to Menu Page</Link>
+      <Link to="/">Back</Link>
+      <Route exact path="/" component={App} />
+      <Route path="/menuPage" component={MenuPage} />
+    </div>
+  </Router>
 );
+ReactDOM.render(routing, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
