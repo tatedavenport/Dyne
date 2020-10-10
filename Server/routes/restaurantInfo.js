@@ -13,7 +13,8 @@ router.get('/restaurants', async (req, res) => {
         let response_entry = {
             id: restaurant.id,
             name: restaurant_data.name,
-            imageUrl: restaurant_data.imageUrl
+            imageUrl: restaurant_data.imageUrl,
+            hours: restaurant_data.hours
         }
         response.push(response_entry);
     }); 
