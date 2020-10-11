@@ -63,7 +63,7 @@ const styles = {
 
 
 
-const steps = ['Restaurant details', 'Contact information', 'Payment details', 'Review Sign-Up'];
+const steps = ['Restaurant details', 'Contact information', 'Menu creation'];
 
 class Checkout extends React.Component {
 
@@ -102,9 +102,9 @@ class Checkout extends React.Component {
       case 1:
         return <ContactInfo onButtonClick={() => this.handleContactSubmit()} steps={steps} handleBack={() => this.handleBack()}/>
       case 2:
-        return <PaymentForm onButtonClick={() => this.handleContactSubmit()} steps={steps} handleBack={() => this.handleBack()}/>;
-      case 3:
-        return <Review onButtonClick={() => this.handleReviewSubmit()} steps={steps} handleBack={() => this.handleBack()}/>;
+        return <PaymentForm onButtonClick={() => this.handlePaymentSubmit()} steps={steps} handleBack={() => this.handleBack()}/>;
+      //case 3:
+        //return <Review onButtonClick={() => this.handleReviewSubmit()} steps={steps} handleBack={() => this.handleBack()}/>;
       default:
         throw new Error('Unknown step');
     }
@@ -139,11 +139,11 @@ class Checkout extends React.Component {
               {this.state.activeStep === steps.length ? (
                 <React.Fragment>
                   <Typography variant="h5" gutterBottom>
-                    Thank you for your order.
+                    Thank you for your order!
                   </Typography>
                   <Typography variant="subtitle1">
-                    Your order number is #2001539. We have emailed your order confirmation, and will
-                    send you an update when your order has shipped.
+                    We have emailed your order confirmation, and will contact you shortly with details about how to get setup.
+                    Welcome to Dyne!
                   </Typography>
                 </React.Fragment>
               ) : (
