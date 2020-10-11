@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const myFirestore = require('../index').myFirestore
-const Restaurant = require('../models/Restaurant');
+const myFirestore = require('../index').myFirestore;
 var uniqid = require('uniqid');
 
 
