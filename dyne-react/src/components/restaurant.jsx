@@ -21,7 +21,7 @@ class Restaurant extends Component {
         {this.props.children}
         <div className="d-flex justify-content-center">
           <img
-            src={this.props.restaurant.img}
+            src={this.props.restaurant.imageUrl}
             width="400"
             height="266"
             alt=""
@@ -30,7 +30,7 @@ class Restaurant extends Component {
         </div>
         <div className="d-flex row-auto justify-content-between">
           <div className="d-flex flex-column">
-            <h5>{this.props.restaurant.title}</h5>
+            <h5>{this.props.restaurant.name}</h5>
             <p className="text-muted small">
               Approx wait time: {this.props.restaurant.wait}
             </p>
