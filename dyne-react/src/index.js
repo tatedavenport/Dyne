@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import App from "./App";
 import MenuPage from "./components/menuPage";
 import * as serviceWorker from "./serviceWorker";
@@ -10,10 +10,8 @@ import "bootstrap/dist/css/bootstrap.css";
 const routing = (
   <Router>
     <div>
-      <Link to="/menuPage">Link to Menu Page</Link>
-      <Link to="/">Back</Link>
       <Route exact path="/" component={App} />
-      <Route path="/menuPage" component={MenuPage} />
+      <Route path="/:menuPage" component={MenuPage} />
     </div>
   </Router>
 );

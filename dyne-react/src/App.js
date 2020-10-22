@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import NavBar from "./components/navbar";
 import Restaurants from "./components/restaurants";
-import MenuPage from "./components/menuPage";
 import "./App.css";
 import Axios from "axios";
 
@@ -23,7 +22,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <React.Fragment>
         <NavBar />
