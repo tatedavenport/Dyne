@@ -35,9 +35,10 @@ class ViewController: UIViewController {
                 for i in 0..<rests.count {
                     // Do any additional setup after loading the view, typically from a nib.
                     print("Begin of code")
-                    let url = URL(string: rests[i].imageUrl)!
-                    self.downloadImage(from: url, restaurantIndex: i)
-                    print("End of code. The image will continue downloading in the background and it will be loaded when it ends.")
+                    if let url = URL(string: rests[i].imageUrl) {
+                        self.downloadImage(from: url, restaurantIndex: i)
+                        print("End of code. The image will continue downloading in the background and it will be loaded when it ends.")
+                    }
                 }
             }
             
