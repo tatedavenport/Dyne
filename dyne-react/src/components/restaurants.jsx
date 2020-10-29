@@ -9,9 +9,13 @@ class Restaurants extends Component {
       <div>
         {this.props.restaurants.map((restaurant) => (
           <Link
-            to={{ pathname: "/menuPage", query: { id: restaurant.id } }}
+            to={{
+              pathname: "/menuPage",
+              query: { id: restaurant.id, imageUrl: restaurant.imageUrl },
+            }}
             key={restaurant.id}
             restaurant={restaurant}
+            className="link"
           >
             <Restaurant key={restaurant.id} restaurant={restaurant} />
           </Link>

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Menu from "./menu";
 import NavBar from "./navbar";
-import { Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import Axios from "axios";
+import FoodDetail from "./foodDetail";
 
 class MenuPage extends Component {
   state = { foodItems: [] };
@@ -21,8 +22,22 @@ class MenuPage extends Component {
     return (
       <div className="container">
         <NavBar />
-        <Link to="/">Back</Link>
-        <Menu foodItems={this.state.foodItems} />
+        <Link to="/" className="link">
+          Back
+        </Link>
+        <hr />
+        <div className="d-flex justify-content-center">
+          <img
+            src={this.props.location.query.imageUrl}
+            width="400"
+            height="266"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div>
+          <Menu foodItems={this.state.foodItems} />
+        </div>
       </div>
     );
   }

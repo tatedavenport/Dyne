@@ -31,23 +31,39 @@ class Restaurant extends Component {
         <div className="d-flex row-auto justify-content-between">
           <div className="d-flex flex-column">
             <h5>{this.props.restaurant.name}</h5>
-            <p className="text-muted small">
-              Approx wait time: {this.props.restaurant.wait}
-            </p>
+            {this.props.restaurant.wait ? (
+              <p className="text-muted small">
+                Approx wait time: {this.props.restaurant.wait}
+              </p>
+            ) : (
+              <p className="text-muted small">Approx wait time: N/A</p>
+            )}
           </div>
-          <div className="d-flex flex-column">
-            <p className="float-right small">{this.props.restaurant.rating}</p>
-            <Rating
-              name="half-rating-read"
-              size="small"
-              defaultValue={5.0}
-              value={this.props.restaurant.rating}
-              precision={0.1}
-              readOnly
-            />
-            <p className={this.formatRestaurantStatus()}>
-              {this.props.restaurant.status}
-            </p>
+          <div className="d-flex flex-column text-right">
+            <div className="d-flex row-auto">
+              <Rating
+                name="half-rating-read"
+                size="small"
+                defaultValue={5.0}
+                value={this.props.restaurant.rating}
+                precision={0.1}
+                readOnly
+              />
+              {this.props.restaurant.rating ? (
+                <p className="small">{this.props.restaurant.rating}</p>
+              ) : (
+                <p className="small">5.0</p>
+              )}
+            </div>
+            <div className="d-flex row-auto">
+              {this.props.restaurant.status ? (
+                <p className={this.formatRestaurantStatus()}>
+                  {this.props.restaurant.status}
+                </p>
+              ) : (
+                <p className="text-muted small">Hours Unavailable</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
