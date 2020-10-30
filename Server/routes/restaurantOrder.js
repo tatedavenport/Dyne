@@ -52,7 +52,6 @@ router.get('/menu/:restID', async (req, res) => {
 });
 
 router.post('/menu/:restID', async (req, res) => {
-    console.log('here');
     admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
         firestore.collection('restaurants').doc(decodedToken.uid).collection('menu').add({
             name: req.body.name,
@@ -60,12 +59,56 @@ router.post('/menu/:restID', async (req, res) => {
             price: req.body.price,
             description: req.body.description,
             category: req.body.category
-        });
-        res.send("Success");
+        }).then(response => {
+            res.send(response);
+        })
     }).catch(error => {
         console.log(error);
         res.status(400);
         res.send(error);
+    })
+});
+
+router.post('/menu/:restID/:menuID', async (req, res) => { //restID is token but menuID is just id in firestore
+    admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
+        const menuRef = firestore.collection('restaurants').doc(decodedToken.uid).collection('menu').doc(req.params.menuID);
+        const response = {}
+        if (req.body.name) {
+            response.name = req.body.name;
+        }
+        if (req.body.price) {
+            response.price = req.body.price;
+        }
+        if (req.body.category) {
+            response.category = req.body.category;
+        }
+        if (req.body.description) {
+            response.description = req.body.description;
+        }
+        if (req.body.imageUrl) {
+            response.imageUrl = req.body.imageUrl;
+        }
+        menuRef.update(response).then(updateResponse => {
+            res.send('successful update');
+        }).catch(error => {
+            res.status(400);
+            res.send('Unable to update database');
+        });
+    }).catch(error => {
+        console.log(error);
+        res.status(400);
+        res.send('Invalid user id token');
+    });
+})
+
+router.post('/menu/:restID/newItem', async (req, res) => {
+    admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
+        //create new menu item
+        //firestore.collection('restaurants').doc(decodedToken.uid).collection('menu').doc()
+        //return id
+    }).catch(error => {
+        res.status(400);
+        res.send('Invalid user id token');
     })
 });
 
