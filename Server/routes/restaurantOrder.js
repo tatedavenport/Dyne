@@ -53,14 +53,16 @@ router.get('/menu/:restID', async (req, res) => {
 
 router.post('/menu/:restID', async (req, res) => {
     admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
-        firestore.collection('restaurants').doc(decodedToken.uid).collection('menu').add({
-            name: req.body.name,
-            imageUrl: req.body.imageUrl,
-            price: req.body.price,
-            description: req.body.description,
-            category: req.body.category
-        }).then(response => {
-            res.send(response);
+        let newDoc = firestore.collection('restaurants').doc(decodedToken.uid).collection('menu').doc();
+        console.log('newdocid')
+        console.log(newDoc.id);
+        newDoc.set({}).then(response => {
+            //also add id to fooditem ids
+            firestore.collection('restaurants').doc(decodedToken.uid).update({
+                foodItemIds: admin.firestore.FieldValue.arrayUnion(newDoc.id)
+            });
+              
+            res.send({id: newDoc.id});
         })
     }).catch(error => {
         console.log(error);

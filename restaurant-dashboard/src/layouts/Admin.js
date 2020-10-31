@@ -111,7 +111,6 @@ export default function Admin({ ...rest }) {
       <Sidebar
         routes={routes}
         logoText={"Dyne"}
-        logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}

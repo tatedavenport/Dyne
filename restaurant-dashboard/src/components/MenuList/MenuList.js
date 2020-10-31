@@ -43,8 +43,8 @@ class MenuList extends React.Component {
 
                 }
             }).then(response => {
-                console.log(response.data._path.segments[3]); //this is the newly created menu items id
-                const id = response.data._path.segments[3];
+                console.log(response.data.id); //this is the newly created menu items id
+                const id = response.data.id;
                 const newArray = this.state.menuItems.concat([{data: {}, id: id}]);
                 console.log(newArray);
                 this.setState({menuItems: newArray});
