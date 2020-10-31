@@ -56,7 +56,29 @@ class MenuList extends React.Component {
         //push component to state
     }
 
+    onDeleteHandler = id => {
+        firebase.auth().currentUser.getIdToken(true).then(idToken => {
+            axios({
+                method:'post',
+                url:`http://localhost:8080/restaurantOrders/menu/${idToken}/${id}/delete`
+            }).then(response => {
+                console.log('Document deleted');
+                //delete corresponding menuitem
+                const newArray = this.state.menuItems.filter(menuItem => {
+                    return menuItem.id !== id;
+                });
+                console.log(newArray);
+                this.setState({menuItems: newArray});
+            }).catch(error => {
+                console.log(error);
+            });
+        }).catch(error => {
+            console.log(error);
+        }); 
+    }
+
     render() {
+        console.log(this.state.menuItems);
         return (
             <div>
                 <GridContainer direction='row'>
@@ -65,7 +87,7 @@ class MenuList extends React.Component {
                             {this.state.menuItems.map(menuItem => {
                                 return (
                                     <GridItem xs={12} sm={12} md={12}>
-                                        <MenuItem name={menuItem.data?menuItem.data.name:''} id={menuItem.id} menuItem={menuItem.data?menuItem.data:{}}/>
+                                        <MenuItem name={menuItem.data?menuItem.data.name:''} id={menuItem.id} menuItem={menuItem.data?menuItem.data:{}} onDeleteHandler={this.onDeleteHandler}/>
                                     </GridItem>
                                 )
                             })}

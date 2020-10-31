@@ -124,6 +124,11 @@ class MenuItem extends React.Component {
         this.setState({description: e.target.value});
     }
 
+    onDeleteClick = e => {
+        console.log('clicked');
+        this.props.onDeleteHandler(this.props.id);
+    }
+
 
     render() {
         return (
@@ -193,7 +198,8 @@ class MenuItem extends React.Component {
                         </GridContainer>
                         </CardBody>
                         <CardFooter>
-                        <Button color="primary" onClick={this.onClickHandler}>Update Profile</Button>
+                            <Button color="primary" onClick={this.onClickHandler}>Update Menu Item</Button>
+                            <Button color="primary" onClick={this.onDeleteClick}>Delete Menu Item</Button>
                         </CardFooter>
                     </Card>
                     </GridItem>

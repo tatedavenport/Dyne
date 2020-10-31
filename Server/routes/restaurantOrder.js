@@ -3,7 +3,7 @@ const router = express.Router();
 const firestore = require('../index').myFirestore;
 const admin = require('../index').admin;
 
-router.post('/orders', async (req, res) => { //get all needs action process orders
+router.post('/orders', async (req, res) => { //order statuses are "needs attention", "in process", and "closed"
     if (!req.body.status) {
         res.status(400);
         res.send('Request body needs to specify status');
@@ -110,6 +110,20 @@ router.post('/menu/:restID/newItem', async (req, res) => {
         res.status(400);
         res.send('Invalid user id token');
     })
+});
+
+router.post('/menu/:restID/:menuID/delete', async (req, res) => {
+    admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
+        firestore.collection('restaurants').doc(decodedToken.uid).collection('menu').doc(req.params.menuID).delete().then(response => {
+            res.send('Documente deleted');
+        }).catch(error => {
+            res.status(400);
+            res.send('Coudln\'t delete doclument');
+        })
+    }).catch(error => {
+        res.status(400);
+        res.send('Invalid user id token');
+    });
 });
 
 module.exports = router;

@@ -31,6 +31,8 @@ import Language from "@material-ui/icons/Language";
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import TableList from "views/TableList/TableList.js";
+import OpenTableList from "views/OpenTableList/OpenTableList.js";
+import ClosedTableList from "views/ClosedTableList/ClosedTableList.js";
 import Typography from "views/Typography/Typography.js";
 import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
@@ -63,7 +65,7 @@ const dashboardRoutes = [
     name: "Open Orders",
     rtlName: "قائمة الجدول",
     icon: EventBusyIcon,
-    component: TableList,
+    component: OpenTableList,
     layout: "/admin"
   },
   {
@@ -71,7 +73,7 @@ const dashboardRoutes = [
     name: "Closed Orders",
     rtlName: "طباعة",
     icon: EventAvailableIcon,
-    component: Typography,
+    component: ClosedTableList,
     layout: "/admin"
   },
   {
