@@ -50,14 +50,16 @@ router.get('/restaurants/:restID', async (req, res) => {
 
 router.get('/restaurants/:restID/menu', async (req, res) => {
     let restID = req.params.restID;
-    let menu = await myFirestore.collection('restaurants').doc(restID).collection('menu').doc('menu').get();
-    let menu_data = menu.data();
-    if (menu_data) {
-        res.send(menu_data.foodItems)
-    } else {
+    myFirestore.collection('restaurants').doc(restID).collection('menu').get().then(snapshot => {
+        let response = []
+        snapshot.forEach(doc => {
+            response.push(doc.data());
+        });
+        res.send(response);
+    }).catch(error => {
         res.status(404);
-        res.send("Invalid restaurant ID");
-    }
+        res.send(error);
+    })
 });
 
 router.post('/restaurants', async (req, res) => { //for restaurant sign up
@@ -99,57 +101,56 @@ router.post('/restaurants/:restID/image', async (req, res) => {
 
 router.post('/restaurants/:restID/orders', async (req, res) => {
     let noErrors = true;
-    admin.auth().verifyIdToken(req.body.idToken).then(decodedToken => {
-        let response = {};
-        myFirestore.collection('restaurants').doc(req.params.restID).collection('menu').doc('menu').get().then(menu => {
-            const menuData = menu.data().foodItems;
-            const socket = userIDToSocketMap[req.params.restID];
-            io.to(socket.id).emit('new-order', req.body);
-            console.log('here');
-            console.log(socket)
-            response.orderTotal = 0;
+    let response = {};
+    myFirestore.collection('restaurants').doc(req.params.restID).collection('menu').doc('menu').get().then(menu => {
+        const menuData = menu.data().foodItems;
+        const socket = userIDToSocketMap[req.params.restID];
+        io.to(socket.id).emit('new-order', req.body);
+        console.log('here');
+        console.log(socket)
+        response.orderTotal = 0;
 
-            //For each ordered food item, find corresponding item in restaurants menu to calculate price
-            req.body.foodItems.forEach(foodItem => {
-                menuData.forEach(menuItem => {
-                    if (foodItem.id === menuItem.id) {
-                        let priceForTheseItems = foodItem.count  * menuItem.price;
-                        response.orderTotal += priceForTheseItems;
-                    }
-                })
+        //For each ordered food item, find corresponding item in restaurants menu to calculate price
+        req.body.foodItems.forEach(foodItem => {
+            menuData.forEach(menuItem => {
+                if (foodItem.id === menuItem.id) {
+                    let priceForTheseItems = foodItem.count  * menuItem.price;
+                    response.orderTotal += priceForTheseItems;
+                }
             })
+        })
 
 
-            if (!req.body.tip) {
-                req.body.tip = 0;
-            }
+        if (!req.body.tip) {
+            req.body.tip = 0;
+        }
 
-            response.orderTotal += req.body.tip;
+        response.orderTotal += req.body.tip;
+        response.orderId = orderId;
 
-            //add order to db
-            const orderId = uniqid();
-            const newOrder = myFirestore.collection('restaurants').doc(req.params.restID).collection('orders').doc(orderId);
-            const datetime = new Date();
-            const dateString = datetime.toLocaleString();
-            newOrder.set({
-                date: dateString,
-                foodItems: req.body.foodItems,
-                restID: req.params.restID,
-                tableIdentifier: req.body.tableIdentifier,
-                tip: req.body.tip,
-                uid: decodedToken.uid,
-                status: "needs attention", //this won't need to change, all new orders will be "needs attention" to begin with
-                orderNumber: orderCount.orderCount,
-                name: req.body.name,
-            }).catch(error=>{console.log(error)});
-            orderCount.orderCount++;
-            //send response back to client
-            res.send(response);
-        });
-    }).catch(error => {
-        //invalid user on client side
-        console.log(error);
-    });
+        //add order to db
+        const orderId = uniqid();
+        const newOrder = myFirestore.collection('restaurants').doc(req.params.restID).collection('orders').doc(orderId);
+        const datetime = new Date();
+        const dateString = datetime.toLocaleString();
+        newOrder.set({
+            date: dateString,
+            foodItems: req.body.foodItems,
+            restID: req.params.restID,
+            tableIdentifier: req.body.tableIdentifier,
+            tip: req.body.tip,
+            status: "needs attention", //this won't need to change, all new orders will be "needs attention" to begin with
+            orderNumber: orderCount.orderCount,
+            name: req.body.name,
+        }).catch(error=>{console.log(error)});
+        orderCount.orderCount++;
+        //send response back to client
+        res.send(response);
+    }).catch(error =>{
+        res.status(400);
+        response = {error: 'Couldn\'t create db entry'};
+        res.send('Couldn\'t create db entry');
+    })
 })
 
 function parse_restaurant_data(restaurant_data) { //can't use Restaurant class because firestore wants objects not created with new operator
