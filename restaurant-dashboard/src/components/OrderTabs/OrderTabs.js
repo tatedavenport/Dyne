@@ -18,7 +18,7 @@ import styles from "assets/jss/material-dashboard-react/components/customTabsSty
 
 const useStyles = makeStyles(styles);
 
-export default function CustomTabs(props) {
+export default function OrderTabs(props) {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, value) => {
     setValue(value);
@@ -73,18 +73,12 @@ export default function CustomTabs(props) {
           }
           return null;
         })}
-        <Table
-          tableHeaderColor="primary"
-          tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
-          tableData={[["#57ad6", "4", "Timmy", "3 minutes"]]}
-          stickyHeader
-        />
       </CardBody>
     </Card>
   );
 }
 
-CustomTabs.propTypes = {
+OrderTabs.propTypes = {
   headerColor: PropTypes.oneOf([
     "warning",
     "success",

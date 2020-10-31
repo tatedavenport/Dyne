@@ -43,7 +43,7 @@ import { firebase } from "../../index";
 
 const useStyles = makeStyles(styles);
 
-export default function Dashboard() {
+export default function OrderDashboard() {
   const classes = useStyles();
   return (
     <div>

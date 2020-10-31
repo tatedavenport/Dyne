@@ -11,6 +11,12 @@ import CardBody from "components/Card/CardBody.js";
 import { firebase } from "../../index.js";
 import axios from 'axios';
 import { render } from "react-dom";
+import OrderTabs from "components/OrderTabs/OrderTabs.js";
+import BugReport from "@material-ui/icons/BugReport";
+import Tasks from "components/Tasks/Tasks.js";
+import Code from "@material-ui/icons/Code";
+import Cloud from "@material-ui/icons/Cloud";
+import { bugs, website, server } from "variables/general.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -105,7 +111,7 @@ class OpenTableList extends React.Component {
   render() {
     return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
+        {/* <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={this.props.classes.cardTitleWhite}>Closed</h4>
@@ -140,6 +146,50 @@ class OpenTableList extends React.Component {
               />
             </CardBody>
           </Card>
+        </GridItem> */}
+        <GridItem xs={12}>
+          <OrderTabs
+              title="Orders:"
+              headerColor="primary"
+              tabs={[
+                {
+                  tabName: "Open Orders",
+                  tabIcon: BugReport,
+                  tabContent: (
+                    <Table
+                      tableHeaderColor="primary"
+                      tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
+                      tableData={[["#57ad6", "2", "Timmy", "3 minutes"],["#4x760", "3", "Sally Thompson", "12 Minutes"], ["#3dfd7", "1", "Tate Davenport", "16 Minutes"]]}
+                      stickyHeader
+                    />
+                  )
+                },
+                {
+                  tabName: "In Process",
+                  tabIcon: Code,
+                  tabContent: (
+                    <Table
+                      tableHeaderColor="primary"
+                      tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
+                      tableData={[["#5s709", "5", "George P. Burdell", "5 minutes"], ["#9xse8", "1", "Frank Sinard", "8 Minutes"]]}
+                      stickyHeader
+                    />
+                  )
+                },
+                {
+                  tabName: "Closed",
+                  tabIcon: Cloud,
+                  tabContent: (
+                    <Table
+                      tableHeaderColor="primary"
+                      tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
+                      tableData={[["#fx690", "6", "Alvin Fitzpatrick", "2 minutes"]]}
+                      stickyHeader
+                    />
+                  )
+                }
+              ]}
+            />
         </GridItem>
       </GridContainer>
     

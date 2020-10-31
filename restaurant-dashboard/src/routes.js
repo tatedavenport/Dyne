@@ -62,18 +62,10 @@ const dashboardRoutes = [
   },
   {
     path: "/open-orders",
-    name: "Open Orders",
+    name: "Orders",
     rtlName: "قائمة الجدول",
     icon: EventBusyIcon,
     component: OpenTableList,
-    layout: "/admin"
-  },
-  {
-    path: "/closed-orders",
-    name: "Closed Orders",
-    rtlName: "طباعة",
-    icon: EventAvailableIcon,
-    component: ClosedTableList,
     layout: "/admin"
   },
   {
