@@ -117,14 +117,25 @@ router.post('/menu/:restID/newItem', async (req, res) => {
 router.post('/menu/:restID/:menuID/delete', async (req, res) => {
     admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
         firestore.collection('restaurants').doc(decodedToken.uid).collection('menu').doc(req.params.menuID).delete().then(response => {
-            res.send('Documente deleted');
+            firestore.collection('restaurants').doc(decodedToken.uid).update({foodItemIds: admin.firestore.FieldValue.arrayRemove(req.params.menuID)}).then(() => {
+                res.send('Document deleted');
+            }).catch(error => {
+                res.send('2');
+                console.log(error);
+            })
         }).catch(error => {
             res.status(400);
-            res.send('Coudln\'t delete doclument');
+            console.log(error);
+            res.send('1');
+        }).catch(error => {
+            res.status(400);
+            console.log(error);
+            res.send('3');
         })
     }).catch(error => {
         res.status(400);
-        res.send('Invalid user id token');
+        console.log(error);
+        res.send('4');
     });
 });
 

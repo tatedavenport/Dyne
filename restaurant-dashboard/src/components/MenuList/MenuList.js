@@ -6,6 +6,7 @@ import axios from 'axios';
 import { firebase } from "../../index.js";
 import { Button } from '@material-ui/core';
 import { withStyles } from "@material-ui/core/styles";
+import { firestore } from 'firebase';
 
 const styles = {
     buttonHolder: {
@@ -69,6 +70,7 @@ class MenuList extends React.Component {
                 });
                 console.log(newArray);
                 this.setState({menuItems: newArray});
+                //remove foodItem id
             }).catch(error => {
                 console.log(error);
             });
