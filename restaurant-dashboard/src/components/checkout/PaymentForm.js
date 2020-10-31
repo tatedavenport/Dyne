@@ -9,6 +9,7 @@ import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import FoodItem from './FoodItem';
+import { firebase } from '../../index';
 
 const theme = createMuiTheme({
   palette: {
@@ -42,6 +43,8 @@ class PaymentForm extends React.Component {
     email: "",
     password: "",
     description: "",
+    url: "",
+    selectedImage: {}
   }
 
   handleClick = () => {
@@ -58,6 +61,18 @@ class PaymentForm extends React.Component {
 
   handleDescriptionChange = (e) => {
     this.setState({description: e.target.value});
+  }
+
+  onFileSubmit = e => {
+    let storageRef = firebase.storage().ref();
+    let imageRef = storageRef.child(`images/${this.props.id}`);
+    console.log(e.target.files[0]);
+    var fr = new FileReader();
+    fr.onload = (url) => {
+      this.setState({url: url.target.result});
+    }
+    this.setState({file:e.target.files[0]});
+    fr.readAsDataURL(e.target.files[0]);
   }
 
   render() {
@@ -104,6 +119,13 @@ class PaymentForm extends React.Component {
                   onChange={this.handleDescriptionChange}
                   value={this.state.description}
               />
+              </Grid>
+              <Grid item xs={6}>
+                 <input type="file" onChange={this.onFileSubmit}>
+                 </input>
+              </Grid>
+              <Grid item xs={6}>
+                 <img src={this.state.url} width="50" height="50"></img>
               </Grid>
               <Grid item xs={12}>
                   <div className={classes.buttons}>

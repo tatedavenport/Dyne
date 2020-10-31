@@ -108,7 +108,7 @@ class Checkout extends React.Component {
   handleCheckoutSubmit = () => {
     //create firebase user, which will automatically be signed in
     let idToken;
-    console.log(this.values.paymentState.email);
+    console.log(this.values.paymentState.file);
     firebase.auth().createUserWithEmailAndPassword(this.values.paymentState.email, this.values.paymentState.password).then(() => {
       //now user is created, get uid
       let user = firebase.auth().currentUser;
@@ -140,6 +140,28 @@ class Checkout extends React.Component {
             console.log(response);
             let status_400 = false;
             if (!status_400) {
+              let storageRef = firebase.storage().ref();
+              let imageRef = storageRef.child(`images/${response.data.id}`);
+              console.log('response id')
+              console.log(response);
+              imageRef.put(this.values.paymentState.file).then(snapshot => {
+                  imageRef.getDownloadURL().then(url => {
+                      //write url to firestore
+                      console.log('image write');
+                      console.log(idToken);
+                      console.log(url);
+                      axios({
+                        method:'post',
+                        url:`http://localhost:8080/restaurants/${idToken}/image`,
+                        data: {
+                          url:url
+                        }
+                      })
+                  });
+                  console.log('image uploaded');
+              }).catch(error => {
+                  console.log('upload failed');
+              });
               let new_url = `/admin/${idToken}/dashboard`;
               this.props.history.push(`/admin/dashboard`);
             }

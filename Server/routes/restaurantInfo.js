@@ -62,7 +62,7 @@ router.get('/restaurants/:restID/menu', async (req, res) => {
 
 router.post('/restaurants', async (req, res) => { //for restaurant sign up
     console.log(req.body);
-    if (!req.body.name || !req.body.description || !req.body.hours || !req.body.imageUrl) {
+    if (!req.body.name || !req.body.hours || !req.body.imageUrl) {
         res.status(400);
         res.send("Missing parameters");
     } else {
@@ -72,13 +72,29 @@ router.post('/restaurants', async (req, res) => { //for restaurant sign up
             const new_restaurant = parse_restaurant_data(req.body);
             const new_restaurant_ref = myFirestore.collection('restaurants').doc(new_restaurant_id);
             new_restaurant_ref.set(new_restaurant);
-            res.send("Success");
+            res.send({id: new_restaurant_id});
         }).catch(error => {
             console.log(error);
             res.status(400);
             res.send("Invalid token");
         });
     }
+});
+
+router.post('/restaurants/:restID/image', async (req, res) => {
+    console.log('here1');
+    admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
+        console.log('here2');
+        myFirestore.collection('restaurants').doc(decodedToken.uid).update({imageUrl: req.body.url}).then(() => {
+            res.send('restaurant image posted');
+        }).catch(error2 => {
+            console.log(error2);
+            res.send(error2);
+        });
+    }).catch(error => {
+        console.log(error);
+        res.send(error);
+    })
 });
 
 router.post('/restaurants/:restID/orders', async (req, res) => {
