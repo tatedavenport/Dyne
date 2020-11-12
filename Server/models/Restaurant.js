@@ -1,13 +1,13 @@
-var uniqid = require('uniqid');
+const { v4: uuidv4 } = require('uuid');
 
 class Restaurant {
-    constructor(name, imageUrl, description, hours, foodItemsIds) {
+    constructor(name, imageUrl, description, hours, foodItemIds) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.hours = hours;
-        this.foodItemsIds = foodItemsIds;
-        this.id = uniqid();
+        this.foodItemIds = foodItemIds;
+        this.id = uuidv4();
     }
 }
 
