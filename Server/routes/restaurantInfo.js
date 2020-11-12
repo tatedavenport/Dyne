@@ -53,7 +53,7 @@ router.get('/restaurants/:restID/menu', async (req, res) => {
     myFirestore.collection('restaurants').doc(restID).collection('menu').get().then(snapshot => {
         let response = []
         snapshot.forEach(doc => {
-            response.push(doc.data());
+            response.push({id: doc.id, data: doc.data()});
         });
         res.send(response);
     }).catch(error => {
