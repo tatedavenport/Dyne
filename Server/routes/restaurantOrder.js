@@ -9,10 +9,10 @@ router.post('/orders', async (req, res) => { //order statuses are "needs attenti
         res.send('Request body needs to specify status');
     }
     admin.auth().verifyIdToken(req.body.idToken).then(decodedToken => {
-        firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').where('status', '==', req.body.status).get().then(snapshot => {
+        firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').get().then(snapshot => {
             response = [];
             if (snapshot.empty) {
-                console.log('No matching documents for needs action');
+                console.log('No available orders');
             } else {
                 snapshot.forEach(doc => {
                     let data = doc.data();
@@ -20,6 +20,10 @@ router.post('/orders', async (req, res) => { //order statuses are "needs attenti
                 });
             }
             res.send(response);
+        }).catch(error => {
+            console.log(error);
+            res.status(400);
+            res.send(error);
         });
     }).catch(error => {
         console.log(error);

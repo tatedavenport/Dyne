@@ -102,19 +102,39 @@ router.post('/restaurants/:restID/image', async (req, res) => {
 router.post('/restaurants/:restID/orders', async (req, res) => {
     let noErrors = true;
     let response = {};
-    myFirestore.collection('restaurants').doc(req.params.restID).collection('menu').doc('menu').get().then(menu => {
-        const menuData = menu.data().foodItems;
-        const socket = userIDToSocketMap[req.params.restID];
-        io.to(socket.id).emit('new-order', req.body);
-        console.log('here');
-        console.log(socket)
+    if (!req.body.name) {
+        res.status(400);
+        res.send('Need a name with the order');
+    } else if (!req.body.foodItems) {
+        res.status(400);
+        res.send('Need a list of food items');
+    } else if (req.body.foodItems.length == 0) {
+        res.status(400);
+        res.send('Need at least one food item');
+    }
+    myFirestore.collection('restaurants').doc(req.params.restID).collection('menu').get().then(snapshot => {
+        const foodItems = [];
+        snapshot.forEach(menuItem => {
+            foodItems.push({id:menuItem.id, data: menuItem.data()});
+        })
+        console.log(foodItems);
+        //const socket = userIDToSocketMap[req.params.restID];
+        //io.to(socket.id).emit('new-order', req.body);
+        //console.log(socket)
         response.orderTotal = 0;
 
         //For each ordered food item, find corresponding item in restaurants menu to calculate price
         req.body.foodItems.forEach(foodItem => {
-            menuData.forEach(menuItem => {
+            foodItems.forEach(menuItem => {
+                if (!foodItem.id) {
+                    res.status(400);
+                    res.send('Every fooditem needs an id');
+                } else if (!foodItem.count) {
+                    res.status(400);
+                    res.send('Every fooditem needs a count');
+                }
                 if (foodItem.id === menuItem.id) {
-                    let priceForTheseItems = foodItem.count  * menuItem.price;
+                    let priceForTheseItems = foodItem.count  * menuItem.data.price;
                     response.orderTotal += priceForTheseItems;
                 }
             })
@@ -126,10 +146,10 @@ router.post('/restaurants/:restID/orders', async (req, res) => {
         }
 
         response.orderTotal += req.body.tip;
-        response.orderId = orderId;
-
+        
         //add order to db
         const orderId = uniqid();
+        response.orderId = orderId;
         const newOrder = myFirestore.collection('restaurants').doc(req.params.restID).collection('orders').doc(orderId);
         const datetime = new Date();
         const dateString = datetime.toLocaleString();
@@ -142,14 +162,19 @@ router.post('/restaurants/:restID/orders', async (req, res) => {
             status: "needs attention", //this won't need to change, all new orders will be "needs attention" to begin with
             orderNumber: orderCount.orderCount,
             name: req.body.name,
-        }).catch(error=>{console.log(error)});
+        }).catch(error=>{
+            console.log(error);
+            res.status(400);
+            res.send('Couldn\'t create db entry');
+        });
         orderCount.orderCount++;
         //send response back to client
         res.send(response);
     }).catch(error =>{
         res.status(400);
-        response = {error: 'Couldn\'t create db entry'};
-        res.send('Couldn\'t create db entry');
+        console.log(error)
+        response = {error: 'Couldn\'t find a restaurant with that id'};
+        res.send(response);
     })
 })
 
