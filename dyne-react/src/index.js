@@ -7,6 +7,7 @@ import MenuPage from "./components/menuPage";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import QRcode from "./components/QRcode";
+import FoodDetail from "./components/foodDetail";
 
 const routing = (
   <Router>
@@ -14,6 +15,7 @@ const routing = (
       <Route exact path="/" component={App} />
       <Route path="/menuPage" component={MenuPage} />
       <Route path="/QRcode" component={QRcode} />
+      <Route path="/foodDetail" component={FoodDetail} />
     </div>
   </Router>
 );

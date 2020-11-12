@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import NavBar from "./navbar";
 import QrReader from "react-qr-reader";
 
 class QRcode extends Component {
@@ -18,6 +19,7 @@ class QRcode extends Component {
   render() {
     return (
       <div>
+        <NavBar />
         <QrReader
           delay={300}
           onError={this.handleError}

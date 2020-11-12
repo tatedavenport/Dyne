@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import Menu from "./menu";
 import NavBar from "./navbar";
-import { Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Axios from "axios";
-import FoodDetail from "./foodDetail";
 
 class MenuPage extends Component {
   state = { foodItems: [] };
@@ -35,13 +34,17 @@ class MenuPage extends Component {
           />
         </div>
         <div>
-          <Menu foodItems={this.state.foodItems} />
+          <Menu
+            foodItems={this.state.foodItems}
+            onIncrement={this.handleIncrement}
+            onDecrease={this.handleDecrease}
+          />
         </div>
         <div className="d-flex justify-content-center">
-          <button type="button" class="btn btn-secondary">
+          <button type="button" className="btn btn-secondary">
             Your Cart
           </button>
-          <button type="button" class="btn btn-secondary">
+          <button type="button" className="btn btn-secondary">
             Checkout
           </button>
         </div>
