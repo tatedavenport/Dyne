@@ -6,7 +6,7 @@ import Axios from "axios";
 import FoodDetail from "./foodDetail";
 
 class MenuPage extends Component {
-  state = { foodItems: [] };
+  state = { foodItems: [] , restId: ""};
 
   componentDidMount() {
     console.log("App - Mounted");
@@ -14,7 +14,7 @@ class MenuPage extends Component {
     console.log(restaurant_id);
     Axios.get(
       "http://localhost:8080/restaurants/" + restaurant_id + "/menu"
-    ).then((response) => this.setState({ foodItems: response.data }));
+    ).then((response) => this.setState({ foodItems: response.data, restId: restaurant_id }));
   }
 
   render() {
@@ -38,9 +38,17 @@ class MenuPage extends Component {
           <Menu foodItems={this.state.foodItems} />
         </div>
         <div className="d-flex justify-content-center">
-          <button type="button" class="btn btn-secondary">
-            Your Cart
-          </button>
+        <Link
+            to={{
+              pathname: "/cartPage",
+              query: { id: this.state.restId, foodItems: this.state.foodItems},
+            }}
+            className="link"
+          >
+            <button type="button" class="btn btn-secondary">
+              Your Cart
+            </button>
+          </Link>
           <button type="button" class="btn btn-secondary">
             Checkout
           </button>
