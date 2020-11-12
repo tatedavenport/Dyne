@@ -3,6 +3,8 @@ import NavBar from "./components/navbar";
 import Restaurants from "./components/restaurants";
 import "./App.css";
 import Axios from "axios";
+import QRcode from "./components/QRcode";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends Component {
   state = {

@@ -6,12 +6,14 @@ import App from "./App";
 import MenuPage from "./components/menuPage";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
+import QRcode from "./components/QRcode";
 
 const routing = (
   <Router>
     <div>
       <Route exact path="/" component={App} />
-      <Route path="/:menuPage" component={MenuPage} />
+      <Route path="/menuPage" component={MenuPage} />
+      <Route path="/QRcode" component={QRcode} />
     </div>
   </Router>
 );

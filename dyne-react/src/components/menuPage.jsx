@@ -10,15 +10,14 @@ class MenuPage extends Component {
 
   componentDidMount() {
     console.log("App - Mounted");
-    console.log(this.props);
     const restaurant_id = this.props.location.query.id;
+    console.log(restaurant_id);
     Axios.get(
       "http://localhost:8080/restaurants/" + restaurant_id + "/menu"
     ).then((response) => this.setState({ foodItems: response.data }));
   }
 
   render() {
-    //console.log(this.state.foodItems);
     return (
       <div className="container">
         <NavBar />
@@ -37,6 +36,14 @@ class MenuPage extends Component {
         </div>
         <div>
           <Menu foodItems={this.state.foodItems} />
+        </div>
+        <div className="d-flex justify-content-center">
+          <button type="button" class="btn btn-secondary">
+            Your Cart
+          </button>
+          <button type="button" class="btn btn-secondary">
+            Checkout
+          </button>
         </div>
       </div>
     );

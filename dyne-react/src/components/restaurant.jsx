@@ -5,7 +5,7 @@ import Rating from "@material-ui/lab/Rating";
 //status will be calculated depending on the hours of each restaurant (needs function)
 //needs method to handle status color change
 class Restaurant extends Component {
-  state = {};
+  state = { curTime: new Date() };
 
   componentDidUpdate() {
     console.log("App - Update");
@@ -16,6 +16,7 @@ class Restaurant extends Component {
   }
 
   render() {
+    console.log(this.state.curTime.getDay());
     return (
       <div className="container">
         {this.props.children}

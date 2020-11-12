@@ -6,6 +6,8 @@ class Menu extends Component {
   state = {};
 
   render() {
+    console.log("===================================");
+    console.log(this.props);
     return (
       <div className="container">
         <h5>Menu</h5>
