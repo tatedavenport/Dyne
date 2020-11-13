@@ -5,7 +5,6 @@ class Menu extends Component {
   state = {};
 
   render() {
-    console.log(this.props.foodItems);
     return (
       <div className="container">
         <h5>Menu</h5>

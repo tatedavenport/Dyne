@@ -10,7 +10,6 @@ class MenuPage extends Component {
   componentDidMount() {
     console.log("App - Mounted");
     const restaurant_id = this.props.location.query.id;
-    console.log(restaurant_id);
     Axios.get(
       "http://localhost:8080/restaurants/" + restaurant_id + "/menu"
     ).then((response) => this.setState({ foodItems: response.data }));

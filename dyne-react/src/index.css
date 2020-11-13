@@ -20,3 +20,9 @@ code {
   text-decoration: none;
   color: black;
 }
+
+.countBtn {
+  display: inline-block;
+  height: 30px;
+  vertical-align: middle;
+}

@@ -5,7 +5,6 @@ import Restaurant from "./restaurant";
 class Restaurants extends Component {
   state = {};
   render() {
-    console.log(this.props.restaurants);
     return (
       <div>
         {this.props.restaurants.map((restaurant) => (
