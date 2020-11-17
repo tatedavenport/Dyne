@@ -7,11 +7,7 @@ import MenuPage from "./components/menuPage";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import QRcode from "./components/QRcode";
-<<<<<<< HEAD
-import FoodDetail from "./components/foodDetail";
-=======
 import CartPage from "./components/cartPage";
->>>>>>> b3125d112eb5ef4672bcd6a2503a8f86c4af0cf2
 
 const routing = (
   <Router>
@@ -19,11 +15,7 @@ const routing = (
       <Route exact path="/" component={App} />
       <Route path="/menuPage" component={MenuPage} />
       <Route path="/QRcode" component={QRcode} />
-<<<<<<< HEAD
-      <Route path="/foodDetail" component={FoodDetail} />
-=======
       <Route path="/cartPage" component={CartPage} />
->>>>>>> b3125d112eb5ef4672bcd6a2503a8f86c4af0cf2
     </div>
   </Router>
 );

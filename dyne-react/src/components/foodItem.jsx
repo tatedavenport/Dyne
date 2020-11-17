@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 const max_length = 100;
 
 class FoodItem extends Component {

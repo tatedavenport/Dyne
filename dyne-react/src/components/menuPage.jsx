@@ -5,14 +5,17 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 
 class MenuPage extends Component {
-  state = { foodItems: [] , restId: ""};
+  state = { foodItems: [], restId: "" };
 
   componentDidMount() {
     console.log("App - Mounted");
+    console.log(this.props.location.query.id);
     const restaurant_id = this.props.location.query.id;
     Axios.get(
       "http://localhost:8080/restaurants/" + restaurant_id + "/menu"
-    ).then((response) => this.setState({ foodItems: response.data, restId: restaurant_id }));
+    ).then((response) =>
+      this.setState({ foodItems: response.data, restId: restaurant_id })
+    );
   }
 
   render() {
@@ -40,25 +43,18 @@ class MenuPage extends Component {
           />
         </div>
         <div className="d-flex justify-content-center">
-<<<<<<< HEAD
-          <button type="button" className="btn btn-secondary">
-            Your Cart
-          </button>
-          <button type="button" className="btn btn-secondary">
-=======
-        <Link
+          <Link
             to={{
               pathname: "/cartPage",
-              query: { id: this.state.restId, foodItems: this.state.foodItems},
+              query: { id: this.state.restId, foodItems: this.state.foodItems },
             }}
             className="link"
           >
-            <button type="button" class="btn btn-secondary">
+            <button type="button" className="btn btn-secondary">
               Your Cart
             </button>
           </Link>
-          <button type="button" class="btn btn-secondary">
->>>>>>> b3125d112eb5ef4672bcd6a2503a8f86c4af0cf2
+          <button type="button" className="btn btn-secondary">
             Checkout
           </button>
         </div>
