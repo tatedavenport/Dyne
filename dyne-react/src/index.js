@@ -13,7 +13,7 @@ const routing = (
   <Router>
     <div>
       <Route exact path="/" component={App} />
-      <Route path="/menuPage" component={MenuPage} />
+      <Route path="/menuPage/:restaurantID" component={MenuPage} />
       <Route path="/QRcode" component={QRcode} />
       <Route path="/cartPage" component={CartPage} />
     </div>

@@ -9,12 +9,14 @@ class MenuPage extends Component {
 
   componentDidMount() {
     console.log("App - Mounted");
-    console.log(this.props.location.query.id);
-    const restaurant_id = this.props.location.query.id;
+    const restaurant_id = this.props.match.params.restaurantID;
     Axios.get(
       "http://localhost:8080/restaurants/" + restaurant_id + "/menu"
     ).then((response) =>
-      this.setState({ foodItems: response.data, restId: restaurant_id })
+      this.setState({
+        foodItems: response.data,
+        restId: restaurant_id,
+      })
     );
   }
 
@@ -28,9 +30,9 @@ class MenuPage extends Component {
         <hr />
         <div className="d-flex justify-content-center">
           <img
-            src={this.props.location.query.imageUrl}
-            width="400"
-            height="266"
+            src={this.state.image}
+            width="500"
+            height="166"
             alt=""
             loading="lazy"
           />
@@ -50,11 +52,11 @@ class MenuPage extends Component {
             }}
             className="link"
           >
-            <button type="button" className="btn btn-secondary">
+            <button type="button" className="btn btn-success">
               Your Cart
             </button>
           </Link>
-          <button type="button" className="btn btn-secondary">
+          <button type="button" className="btn btn-success">
             Checkout
           </button>
         </div>

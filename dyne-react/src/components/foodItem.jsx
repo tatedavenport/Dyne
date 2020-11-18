@@ -2,9 +2,23 @@ import React, { Component } from "react";
 const max_length = 100;
 
 class FoodItem extends Component {
-  state = { count: 0 };
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: this.props.foodItem.id,
+      count: 0,
+    };
+  }
 
-  componentDidMount() {}
+  handleChange = (e) => {
+    this.setState({ [e.id]: e.count });
+  };
+
+  componentDidUpdate() {
+    if (this.props.onChange) {
+      this.props.onChange(this.state);
+    }
+  }
 
   incrementCount = () => {
     this.setState({
@@ -55,6 +69,7 @@ class FoodItem extends Component {
           <button
             className="btn btn-light countBtn"
             onClick={() => this.decrementCount()}
+            onChange={this.handleChange}
           >
             -
           </button>
@@ -62,6 +77,7 @@ class FoodItem extends Component {
           <button
             className="btn btn-light countBtn"
             onClick={() => this.incrementCount()}
+            onChange={this.handleChange}
           >
             +
           </button>

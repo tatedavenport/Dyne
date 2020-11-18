@@ -52,7 +52,7 @@ class CartPage extends Component {
           <Cart foodItems={mockFoodItems} />
         </div>
         <div className="d-flex justify-content-center">
-          <button type="button" className="btn btn-secondary">
+          <button type="button" className="btn btn-success">
             Place Order
           </button>
         </div>
