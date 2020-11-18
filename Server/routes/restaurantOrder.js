@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const firestore = require('../index').myFirestore;
@@ -16,7 +17,7 @@ router.post('/orders', async (req, res) => { //order statuses are "needs attenti
             } else {
                 snapshot.forEach(doc => {
                     let data = doc.data();
-                    response.push(data);
+                    response.push({id: doc.id, data: data});
                 });
             }
             res.send(response);
@@ -140,6 +141,50 @@ router.post('/menu/:restID/:menuID/delete', async (req, res) => {
         res.status(400);
         console.log(error);
         res.send('4');
+    });
+});
+
+router.post('/orderUpdate/:restID', async (req, res) => {
+    admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
+        //for each order id in req body, update order status
+        //req.body.ids is an array of ids
+        //req.body.newStatus is the new status (needs attention, in process, or closed)
+        //then respond with the orders
+        firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').get().then(snapshot =>{
+            if (snapshot.empty) {
+                console.log('No orders found');
+                res.status(400);
+                res.send('No orders found');
+            }
+            ids = [];
+            snapshot.forEach(doc => {
+                if (req.body.ids.contains(doc.id)) {
+                    ids.push(doc.id);
+                }
+            });
+            //now we have the ids we want to change
+            const batch = db.batch();
+            ids.forEach(id => {
+                let docRef = firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').doc(id);
+                batch.set(docRef, ({status: req.body.newStatus}));
+            });
+            firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').get().then(snapshot =>{
+                if (snapshot.empty) {
+                    console.log('No orders found');
+                    res.status(400);
+                    res.send('No orders found');
+                }
+                response = [];
+                snapshot.forEach(doc => {
+                    response.push({id: doc.id, data: doc.data()});
+                });
+                res.send(response);
+            })
+        })
+    }).catch(error => {
+        console.log(error);
+        res.status(400);
+        res.send('Invalid restaurant token');
     });
 });
 

@@ -17,6 +17,7 @@ import Tasks from "components/Tasks/Tasks.js";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
 import { bugs, website, server } from "variables/general.js";
+import { Button } from "@material-ui/core";
 
 const styles = {
   cardCategoryWhite: {
@@ -45,6 +46,10 @@ const styles = {
       fontWeight: "400",
       lineHeight: "1"
     }
+  },
+  myButton: {
+    backgroundColor: "#a13bb6",
+    color: "#fff"
   }
 };
 
@@ -52,8 +57,19 @@ const styles = {
 class OpenTableList extends React.Component {
 
   state = {
-    needsAttention: [],
-    inProcess: []
+    needsAttention: {
+      items:[],
+      ids:[]
+    },
+    inProcess: {
+      items:[],
+      ids:[]
+    },
+    closed: {
+      items:[],
+      ids:[]
+    },
+    selectedTab: null
   }
 
   componentDidMount() {
@@ -65,102 +81,101 @@ class OpenTableList extends React.Component {
           idToken: idToken,
           status:'needs attention'
         }
-      }).then(response1 => {
-        axios({
-            method: 'post',
-            url:'http://localhost:8080/restaurantOrders/orders',
-            data: {
-              idToken: idToken,
-              status:'in process' 
-            }
-        }).then(response2 => {
-            console.log(response1);
-            //create new tableData array - 4 entries: order number, item count, customer name, and time since order
-            let newTableData1 = [];
-            response1.data.forEach((order, idx) => {
+      }).then(response => {
+            response.data.forEach((order, idx) => {
               let newTableDataEntry = [];
-              newTableDataEntry[0] = order.orderNumber;
-              newTableDataEntry[1] = order.foodItems?order.foodItems.length:0;
-              newTableDataEntry[2] = order.name;
-              newTableDataEntry[3] = order.date;
-              newTableData1[idx] = newTableDataEntry;
+              newTableDataEntry[0] = order.data.orderNumber;
+              newTableDataEntry[1] = order.data.foodItems?order.data.foodItems.length:0;
+              newTableDataEntry[2] = order.data.name;
+              newTableDataEntry[3] = order.data.date;
+              if (order.data.status ==="needs attention") {
+                var stateArrayItems = [...this.state.needsAttention.items];
+                var stateArrayIds = [...this.state.needsAttention.ids];
+                stateArrayItems.push(newTableDataEntry);
+                stateArrayIds.push(order.id);
+                this.setState({needsAttention: {items: stateArrayItems, ids: stateArrayIds}});
+              } else if (order.data.status ==="in process") {
+                var stateArrayItems = [...this.state.inProcess.items];
+                var stateArrayIds = [...this.state.inProcess.ids];
+                stateArrayItems.push(newTableDataEntry);
+                stateArrayIds.push(order.id);
+                this.setState({inProcess: {items: stateArrayItems, ids: stateArrayIds}});
+              } else if (order.data.status ==="closed") {
+                var stateArrayItems = [...this.state.closed.items];
+                var stateArrayIds = [...this.state.closed.ids];
+                stateArrayItems.push(newTableDataEntry);
+                stateArrayIds.push(order.id);
+                this.setState({closed: {items: stateArrayItems, ids: stateArrayIds}});
+              } else {
+                console.log(`Order ${order.id} didn't have a valid status`);
+              }
             });
-            let newTableData2 = [];
-            response2.data.forEach((order, idx) => {
-                let newTableDataEntry = [];
-                newTableDataEntry[0] = order.orderNumber;
-                newTableDataEntry[1] = order.foodItems?order.foodItems.length:0;
-                newTableDataEntry[2] = order.name;
-                newTableDataEntry[3] = order.date;
-                newTableData2[idx] = newTableDataEntry;
-              });
-            //set state
-            this.setState({needsAttention: newTableData1});
-            this.setState({inProcess: newTableData2});
-        }).catch(error2 => {
-            console.log('Error getting in process orders')
-        })
       }).catch(error1 => {
+        console.log(error1);
         console.log('Error getting needs attention orders');
       })
     }).catch(error => {
+      console.log(error);
       console.log('Couldn\'t get idToken');
     })
+  };
+
+  moveButtonClick = (e) => {
+    //based on the text content get the right set of ids to send to the server, 
+    if (e.target.textContent === "Needs Attention") {
+      //needs attention
+      firebase.auth().currentUser.getIdToken(true).then(idToken => {
+        axios({
+          method:"POST",
+          url:`http://localhost:8080/restaurantOrders/orderUpdate/${idToken}`,
+          data: {
+            ids: this.state.needsAttention.ids,
+            newStatus: "in process"
+          }
+        }).then(response => {
+          //use response to set state
+        }).catch(error =>{
+          console.log(error);
+        })
+      })
+    } else if (e.target.textContent === "In Process") {
+      //in process
+    } else if (e.target.textContent === "Closed") {
+      //closed
+    }
+  }
+
+  tabClick = (e) => {
+    console.log(e.target.textContent);
+    this.setState({checkboxState: []});
+    this.setState({selectedTab: e.target.textContent});
+  }
+
+  setCheckedState = (checkboxState) => {
+    console.log(checkboxState);
+    this.setState({checkboxState: checkboxState});
   }
 
   render() {
     return (
+      <div>
       <GridContainer>
-        {/* <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader color="primary">
-              <h4 className={this.props.classes.cardTitleWhite}>Closed</h4>
-              <p className={this.props.classes.cardCategoryWhite}>
-                These orders have already been taken care of
-              </p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                tableHeaderColor="primary"
-                tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
-                tableData={this.state.needsAttention}
-                stickyHeader
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader color="primary">
-              <h4 className={this.props.classes.cardTitleWhite}>In Process</h4>
-              <p className={this.props.classes.cardCategoryWhite}>
-                These orders are in the kitchen
-              </p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                tableHeaderColor="primary"
-                tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
-                tableData={this.state.inProcess}
-                stickyHeader
-              />
-            </CardBody>
-          </Card>
-        </GridItem> */}
         <GridItem xs={12}>
           <OrderTabs
+              tabClick={this.tabClick}
               title="Orders:"
               headerColor="primary"
               tabs={[
                 {
-                  tabName: "Open Orders",
+                  tabName: "Needs Attention",
                   tabIcon: BugReport,
                   tabContent: (
                     <Table
                       tableHeaderColor="primary"
                       tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
-                      tableData={[["#57ad6", "2", "Timmy", "3 minutes"],["#4x760", "3", "Sally Thompson", "12 Minutes"], ["#3dfd7", "1", "Tate Davenport", "16 Minutes"]]}
+                      tableData={this.state.needsAttention.items}
                       stickyHeader
+                      setCheckedState={this.setCheckedState}
                     />
                   )
                 },
@@ -173,6 +188,7 @@ class OpenTableList extends React.Component {
                       tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
                       tableData={[["#5s709", "5", "George P. Burdell", "5 minutes"], ["#9xse8", "1", "Frank Sinard", "8 Minutes"]]}
                       stickyHeader
+                      setCheckedState={this.setCheckedState}
                     />
                   )
                 },
@@ -185,6 +201,7 @@ class OpenTableList extends React.Component {
                       tableHead={["Order Number", "Item Count", "Customer Name", "Time Since Order"]}
                       tableData={[["#fx690", "6", "Alvin Fitzpatrick", "2 minutes"]]}
                       stickyHeader
+                      setCheckedState={this.setCheckedState}
                     />
                   )
                 }
@@ -192,7 +209,10 @@ class OpenTableList extends React.Component {
             />
         </GridItem>
       </GridContainer>
-    
+        <div style={{display: "flex", flexDirection: "row-reverse"}}>
+          <Button variant="contained" className={this.props.classes.myButton}>Move to In process</Button>
+        </div>
+      </div>
     );
   }
 }
