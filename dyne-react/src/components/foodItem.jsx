@@ -14,26 +14,16 @@ class FoodItem extends Component {
     this.setState({ [e.id]: e.count });
   };
 
-  componentDidUpdate() {
-    if (this.props.onChange) {
-      this.props.onChange(this.state);
-    }
-  }
 
   incrementCount = () => {
-    this.setState({
-      count: this.state.count + 1,
-    });
+    this.props.onAddItem({id: this.state.id});
+    this.setState({count: this.state.count+1});
   };
 
   decrementCount = () => {
-    if (this.state.count === 0) {
-      this.setState({ count: this.state.count });
-    } else {
-      this.setState({
-        count: this.state.count - 1,
-      });
-    }
+    this.props.onSubtractItem({id: this.state.id});
+    if (!(this.state.count===0))
+    this.setState({count: this.state.count-1});
   };
 
   render() {
@@ -68,16 +58,14 @@ class FoodItem extends Component {
           </div>
           <button
             className="btn btn-light countBtn"
-            onClick={() => this.decrementCount()}
-            onChange={this.handleChange}
+            onClick={this.decrementCount}
           >
             -
           </button>
           <p>{count} </p>
           <button
             className="btn btn-light countBtn"
-            onClick={() => this.incrementCount()}
-            onChange={this.handleChange}
+            onClick={this.incrementCount}
           >
             +
           </button>

@@ -5,7 +5,6 @@ class Menu extends Component {
   state = {};
 
   render() {
-    const eventhandler = (data) => console.log(data);
     return (
       <div className="container">
         <h5>Menu</h5>
@@ -13,7 +12,8 @@ class Menu extends Component {
           <FoodItem
             key={foodItem.id}
             foodItem={foodItem}
-            onChange={eventhandler}
+            onAddItem={this.props.onAddItem}
+            onSubtractItem={this.props.onSubtractItem}
           />
         ))}
       </div>
