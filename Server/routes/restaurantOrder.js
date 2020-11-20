@@ -11,7 +11,7 @@ router.post('/orders', async (req, res) => { //order statuses are "needs attenti
     }
     admin.auth().verifyIdToken(req.body.idToken).then(decodedToken => {
         firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').get().then(snapshot => {
-            response = [];
+            let response = [];
             if (snapshot.empty) {
                 console.log('No available orders');
             } else {
