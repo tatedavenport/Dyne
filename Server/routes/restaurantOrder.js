@@ -158,27 +158,35 @@ router.post('/orderUpdate/:restID', async (req, res) => {
             }
             ids = [];
             snapshot.forEach(doc => {
-                if (req.body.ids.contains(doc.id)) {
+                if (req.body.ids.includes(doc.id)) {
                     ids.push(doc.id);
                 }
             });
             //now we have the ids we want to change
-            const batch = db.batch();
+            const batch = firestore.batch();
             ids.forEach(id => {
+                console.log(`setting batch for ${id}`);
                 let docRef = firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').doc(id);
-                batch.set(docRef, ({status: req.body.newStatus}));
+                batch.update(docRef, ({status: req.body.newStatus}));
             });
-            firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').get().then(snapshot =>{
-                if (snapshot.empty) {
-                    console.log('No orders found');
-                    res.status(400);
-                    res.send('No orders found');
-                }
-                response = [];
-                snapshot.forEach(doc => {
-                    response.push({id: doc.id, data: doc.data()});
+            batch.commit().then(dontneed => {
+                firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').get().then(snapshot =>{
+                    if (snapshot.empty) {
+                        console.log('No orders found');
+                        res.status(400);
+                        res.send('No orders found');
+                    }
+                    let response = [];
+                    snapshot.forEach(doc => {
+                        response.push({id: doc.id, data: doc.data()});
+                    });
+                    res.send(response);
                 });
-                res.send(response);
+            }).catch(error => {
+                console.log(error);
+                console.log("Error with batched set");
+                res.status(400);
+                res.send(error);
             })
         })
     }).catch(error => {
