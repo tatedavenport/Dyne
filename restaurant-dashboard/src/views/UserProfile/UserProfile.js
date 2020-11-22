@@ -9,11 +9,11 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import axios from "axios";
+import { firebase } from "../../index.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -81,11 +81,60 @@ class UserProfile extends React.Component {
   }
 
   onEmailChange = e => {
+    console.log(e.target.value)
     this.setState({email: e.target.value})
   }
 
   componentDidMount() {
+    //populate components with current restaurant profile info
+    console.log('mounted')
+    firebase.auth().currentUser.getIdToken(true).then(idToken => {
+      axios({
+        method:"GET",
+        url:`http://localhost:8080/restaurantOrders/restaurants/${idToken}`
+      }).then(response => {
+        console.log(response);
+        this.setState({
+          companyName: response.data.name,
+          description: response.data.description,
+          hours: response.data.hours,
+          address: response.data.address,
+          zip: response.data.zip, 
+          city: response.data.city,
+          state: response.data.state,
+          country: response.data.country,
+          email: response.data.email
+        });
+      }).catch(error =>{
+        console.log(error);
+      })
+    })
+  }
 
+  updateProfileClick = e => {
+    console.log(this.state);
+    //send update request to axios, populate state with response
+    firebase.auth().currentUser.getIdToken(true).then(idToken => {
+      axios({
+        method:"POST",
+        url:`http://localhost:8080/restaurants/${idToken}`,
+        data: {
+          description: this.state.description,
+          companyName: this.state.companyName,
+          hours: this.state.hours,
+          address: this.state.address,
+          zip: this.state.zip,
+          city: this.state.city,
+          state: this.state.state,
+          email: this.state.email,
+          country: this.state.country
+        }
+      }).then(response => {
+
+      }).catch(error => {
+        console.log(error);
+      })
+    })
   }
 
   render() {
@@ -107,6 +156,10 @@ class UserProfile extends React.Component {
                       formControlProps={{
                         fullWidth: true
                       }}
+                      inputProps={{
+                        onChange:this.onNameChange,
+                        value: this.state.companyName
+                      }}
                     />
                   </GridItem>
 
@@ -116,6 +169,10 @@ class UserProfile extends React.Component {
                       id="email-address"
                       formControlProps={{
                         fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange:this.onEmailChange,
+                        value: this.state.email
                       }}
                     />
                   </GridItem>
@@ -128,6 +185,10 @@ class UserProfile extends React.Component {
                       formControlProps={{
                         fullWidth: true
                       }}
+                      inputProps={{
+                        onChange:this.onHoursChange,
+                        value: this.state.hours
+                      }}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
@@ -136,6 +197,10 @@ class UserProfile extends React.Component {
                       id="address"
                       formControlProps={{
                         fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange:this.onAddressChange,
+                        value: this.state.address
                       }}
                     />
                   </GridItem>
@@ -148,6 +213,10 @@ class UserProfile extends React.Component {
                       formControlProps={{
                         fullWidth: true
                       }}
+                      inputProps={{
+                        onChange:this.onCityChange,
+                        value: this.state.city
+                      }}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
@@ -157,14 +226,22 @@ class UserProfile extends React.Component {
                       formControlProps={{
                         fullWidth: true
                       }}
+                      inputProps={{
+                        onChange:this.onCountryChange,
+                        value: this.state.country
+                      }}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <CustomInput
-                      labelText="Postal Code"
+                      labelText="Zip Code"
                       id="postal-code"
                       formControlProps={{
                         fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange:this.onZipChange,
+                        value: this.state.zip
                       }}
                     />
                   </GridItem>
@@ -181,12 +258,16 @@ class UserProfile extends React.Component {
                         multiline: true,
                         rows: 5
                       }}
+                      inputProps={{
+                        onChange:this.onDescriptionChange,
+                        value: this.state.description
+                      }}
                     />
                   </GridItem>
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="primary">Update Profile</Button>
+                <Button color="primary" onClick={this.updateProfileClick}>Update Profile</Button>
               </CardFooter>
             </Card>
           </GridItem>

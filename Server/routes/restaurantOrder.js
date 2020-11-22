@@ -196,6 +196,42 @@ router.post('/orderUpdate/:restID', async (req, res) => {
     });
 });
 
+
+router.get('/restaurants/:restID', async (req, res) => {
+
+    admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
+        let restID = req.params.restID;
+        let restaurant = firestore.collection('restaurants').doc(decodedToken.uid).get().then(restaurant =>{
+            let restaurant_data = restaurant.data();
+            let response = {}
+            console.log(restaurant_data)
+            if (restaurant_data) {
+                //valid restID
+                response = {
+                    id: restaurant.id,
+                    name: restaurant_data.name,
+                    description: restaurant_data.description,
+                    hours: restaurant_data.hours,
+                    foodItemIds: restaurant_data.foodItemIds,
+                    city: restaurant_data.city,
+                    country: restaurant_data.country,
+                    address: restaurant_data.address,
+                    zip: restaurant_data.zip,
+                    email: restaurant_data.email,
+                    state: restaurant_data.state
+                }
+                res.send(response);
+            } else {
+                //invalid restID
+                res.status(404);
+                res.send("Invalid restaurant ID");
+            }
+        });
+    }).catch(error =>{
+        console.log(error);
+    }) 
+});
+
 module.exports = router;
 
 
