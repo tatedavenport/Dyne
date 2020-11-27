@@ -130,7 +130,7 @@ router.post('/restaurants/:restID/orders', async (req, res) => {
         response.orderTotal = 0;
 
         //For each ordered food item, find corresponding item in restaurants menu to calculate price
-        req.body.foodItems.forEach(foodItem => {
+        req.body.foodItems.forEach((foodItem, idx) => {
             foodItems.forEach(menuItem => {
                 if (!foodItem.id) {
                     res.status(400);
@@ -142,6 +142,8 @@ router.post('/restaurants/:restID/orders', async (req, res) => {
                 if (foodItem.id === menuItem.id) {
                     let priceForTheseItems = foodItem.count  * menuItem.data.price;
                     response.orderTotal += priceForTheseItems;
+                    req.body.foodItems[idx].name = menuItem.data.name;
+                    console.log(menuItem.data.name)
                 }
             })
         })
@@ -198,7 +200,7 @@ router.post('/restaurants/:restID', async (req, res) => {
             country: req.body.country ? req.body.country : ""
         }).then(response => {
             //instead respond with data
-            firestore.collection('restaurants').doc(decodedToken.uid).get().then(doc => {
+            myFirestore.collection('restaurants').doc(decodedToken.uid).get().then(doc => {
                 res.send(doc.data());
             })
         }).catch(error => {
