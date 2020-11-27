@@ -217,7 +217,8 @@ router.get('/restaurants/:restID', async (req, res) => {
                     address: restaurant_data.address,
                     zip: restaurant_data.zip,
                     email: restaurant_data.email,
-                    state: restaurant_data.state
+                    state: restaurant_data.state,
+                    imageUrl: restaurant_data.imageUrl
                 }
                 res.send(response);
             } else {
