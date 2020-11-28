@@ -5,9 +5,10 @@ class Cart extends Component {
   state = {};
 
   render() {
+    console.log("this is the food items", this.props.order);
     var simpleFoodItems = {};
-    if (this.props.foodItems) {
-      this.props.foodItems.forEach((foodItem) => {
+    if (this.props.order) {
+      this.props.order.forEach((foodItem) => {
         const id = foodItem.id;
         if (id in simpleFoodItems) {
           simpleFoodItems[id].count = simpleFoodItems[id].count + 1;
@@ -15,7 +16,7 @@ class Cart extends Component {
           simpleFoodItems[id] = {};
           simpleFoodItems[id].name = foodItem.name;
           simpleFoodItems[id].price = foodItem.price;
-          simpleFoodItems[id].count = 1;
+          simpleFoodItems[id].count = foodItem.count;
         }
       });
     }

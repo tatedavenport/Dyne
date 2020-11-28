@@ -4,15 +4,15 @@ import NavBar from "./navbar";
 import { Link } from "react-router-dom";
 
 class CartPage extends Component {
-  state = { foodItems: [] };
+  state = { order: [] };
 
   componentDidMount() {
     console.log("App - Mounted");
-    this.setState({ foodItems: this.props.foodItems });
+    this.setState({ order: this.props.location.query.order });
   }
 
   render() {
-    console.log(this.state);
+    console.log(this.state.order);
     const mockFoodItems = [
       {
         id: "123",
@@ -49,7 +49,7 @@ class CartPage extends Component {
         </Link>
         <hr />
         <div>
-          <Cart foodItems={mockFoodItems} />
+          <Cart order={this.state.order} />
         </div>
         <div className="d-flex justify-content-center">
           <button type="button" className="btn btn-success">

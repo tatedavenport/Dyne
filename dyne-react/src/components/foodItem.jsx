@@ -6,6 +6,8 @@ class FoodItem extends Component {
     super(props);
     this.state = {
       id: this.props.foodItem.id,
+      name: this.props.foodItem.data.name,
+      price: this.props.foodItem.data.price,
       count: 0,
     };
   }
@@ -14,16 +16,23 @@ class FoodItem extends Component {
     this.setState({ [e.id]: e.count });
   };
 
-
   incrementCount = () => {
-    this.props.onAddItem({id: this.state.id});
-    this.setState({count: this.state.count+1});
+    this.props.onAddItem({
+      id: this.state.id,
+      name: this.props.foodItem.data.name,
+      price: this.props.foodItem.data.price,
+    });
+    this.setState({ count: this.state.count + 1 });
   };
 
   decrementCount = () => {
-    this.props.onSubtractItem({id: this.state.id});
-    if (!(this.state.count===0))
-    this.setState({count: this.state.count-1});
+    this.props.onSubtractItem({
+      id: this.state.id,
+      name: this.props.foodItem.data.name,
+      price: this.props.foodItem.data.price,
+    });
+    if (!(this.state.count === 0))
+      this.setState({ count: this.state.count - 1 });
   };
 
   render() {
