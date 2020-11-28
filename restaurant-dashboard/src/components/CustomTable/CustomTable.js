@@ -16,7 +16,6 @@ import styles from "assets/jss/material-dashboard-react/components/tableStyle.js
 class CustomTable extends React.Component {
 
   render() {
-    console.log('reg table')
     return (
       <div className={this.props.classes.tableResponsive}>
         <Table className={this.props.classes.table}>
@@ -48,7 +47,7 @@ class CustomTable extends React.Component {
                     );
                   })}
                   <TableCell>
-                    <Checkbox id={key} onChange={this.props.onCheckboxClick} checked={false}>
+                    <Checkbox id={key} onClick={this.props.onCheckboxClick} checked={(this.props.checkboxState[key] === true) ? true : false}>
                       
                     </Checkbox>
                   </TableCell>

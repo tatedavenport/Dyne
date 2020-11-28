@@ -1,4 +1,5 @@
 const express = require('express');
+const { firestore } = require('firebase-admin');
 const router = express.Router();
 const myFirestore = require('../index').myFirestore;
 const admin = require('../index').admin;
@@ -38,7 +39,12 @@ router.get('/restaurants/:restID', async (req, res) => {
             name: restaurant_data.name,
             description: restaurant_data.description,
             hours: restaurant_data.hours,
-            foodItemIds: restaurant_data.foodItemIds
+            foodItemIds: restaurant_data.foodItemIds,
+            city: restaurant_data.city,
+            country: restaurant_data.country,
+            address: restaurant_data.address,
+            zip: restaurant_data.zip,
+            email: restaurant_data.email
         }
         res.send(response);
     } else {
@@ -124,7 +130,7 @@ router.post('/restaurants/:restID/orders', async (req, res) => {
         response.orderTotal = 0;
 
         //For each ordered food item, find corresponding item in restaurants menu to calculate price
-        req.body.foodItems.forEach(foodItem => {
+        req.body.foodItems.forEach((foodItem, idx) => {
             foodItems.forEach(menuItem => {
                 if (!foodItem.id) {
                     res.status(400);
@@ -136,6 +142,8 @@ router.post('/restaurants/:restID/orders', async (req, res) => {
                 if (foodItem.id === menuItem.id) {
                     let priceForTheseItems = foodItem.count  * menuItem.data.price;
                     response.orderTotal += priceForTheseItems;
+                    req.body.foodItems[idx].name = menuItem.data.name;
+                    console.log(menuItem.data.name)
                 }
             })
         })
@@ -177,6 +185,33 @@ router.post('/restaurants/:restID/orders', async (req, res) => {
         res.send(response);
     })
 })
+
+router.post('/restaurants/:restID', async (req, res) => {
+    admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
+        myFirestore.collection('restaurants').doc(decodedToken.uid).update({
+            description: req.body.description ? req.body.description : "",
+            name: req.body.companyName ? req.body.companyName : "",
+            hours: req.body.hours ? req.body.hours : "",
+            address: req.body.address ? req.body.address : "",
+            city: req.body.city ? req.body.city : "",
+            zip: req.body.zip ? req.body.zip : "",
+            state: req.body.state ? req.body.state : "",
+            email: req.body.email ? req.body.email : "",
+            country: req.body.country ? req.body.country : ""
+        }).then(response => {
+            //instead respond with data
+            myFirestore.collection('restaurants').doc(decodedToken.uid).get().then(doc => {
+                res.send(doc.data());
+            })
+        }).catch(error => {
+            res.status(400);
+            console.log(error);
+            res.send(error);
+        });
+    }).catch(error => {
+        console.log(error);
+    })
+});
 
 function parse_restaurant_data(restaurant_data) { //can't use Restaurant class because firestore wants objects not created with new operator
     let restaurant = {
