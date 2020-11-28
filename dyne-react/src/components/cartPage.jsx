@@ -2,44 +2,32 @@ import React, { Component } from "react";
 import Cart from "./cart";
 import NavBar from "./navbar";
 import { Link } from "react-router-dom";
+import Axios from "axios";
 
 class CartPage extends Component {
   state = { order: [] };
 
   componentDidMount() {
     console.log("App - Mounted");
-    this.setState({ order: this.props.location.query.order });
+    this.setState({
+      order: this.props.location.query.order,
+      restID: this.props.match.params.restaurantID,
+    });
   }
 
   render() {
-    console.log(this.state.order);
-    const mockFoodItems = [
-      {
-        id: "123",
-        name: "mcBurger",
-        price: 12.94,
-        description: "fake description",
-      },
-      {
-        id: "123",
-        name: "mcBurger",
-        price: 12.94,
-        description: "fake description",
-      },
-      {
-        id: "123",
-        name: "mcBurger",
-        price: 12.94,
-        description: "fake description",
-      },
-      {
-        id: "128391829329",
-        name: "mcNuggets",
-        price: 2.5,
-        description: "wrongfl",
-      },
-    ];
-
+    const postOrder = () => {
+      const restaurant_id = this.state.restID;
+      Axios.post(
+        "http://localhost:8080/restaurants/" + restaurant_id + "/orders",
+        {
+          name: "testUser",
+          foodItems: this.state.order,
+        }
+      ).then(function (response) {
+        console.log(response);
+      });
+    };
     return (
       <div className="container">
         {this.props.children}
@@ -52,9 +40,18 @@ class CartPage extends Component {
           <Cart order={this.state.order} />
         </div>
         <div className="d-flex justify-content-center">
-          <button type="button" className="btn btn-success">
-            Place Order
-          </button>
+          <Link
+            to={{
+              pathname: "/orderComplete",
+              query: {},
+            }}
+            className="link"
+            onClick={postOrder}
+          >
+            <button type="button" className="btn btn-success">
+              Place Order
+            </button>
+          </Link>
         </div>
       </div>
     );

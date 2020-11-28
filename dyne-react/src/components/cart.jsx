@@ -5,7 +5,6 @@ class Cart extends Component {
   state = {};
 
   render() {
-    console.log("this is the food items", this.props.order);
     var simpleFoodItems = {};
     if (this.props.order) {
       this.props.order.forEach((foodItem) => {

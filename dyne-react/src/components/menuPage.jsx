@@ -97,7 +97,7 @@ class MenuPage extends Component {
         <div className="d-flex justify-content-center">
           <Link
             to={{
-              pathname: "/cartPage",
+              pathname: `/cartPage/${this.state.restId}`,
               query: { id: this.state.restId, order: this.state.order },
             }}
             className="link"
@@ -106,9 +106,6 @@ class MenuPage extends Component {
               Your Cart
             </button>
           </Link>
-          <button type="button" className="btn btn-success">
-            Checkout
-          </button>
         </div>
       </div>
     );
