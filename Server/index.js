@@ -59,6 +59,7 @@ module.exports = {
 //have to require this now due to circular dependency with firebase
 const restaurantInfoRoutes = require('./routes/restaurantInfo');
 const restaurantOrderRoutes = require('./routes/restaurantOrder');
+const foodRunnerRoutes = require('./routes/foodRunner');
 
 //express middleware
 const corsOpts = {
@@ -83,6 +84,7 @@ app.use(function (req, res, next) {
 });
 app.use('/', restaurantInfoRoutes); //need to change this to /restaurants
 app.use('/restaurantOrders', restaurantOrderRoutes);
+app.use('/foodRunner', foodRunnerRoutes);
 
 
 
