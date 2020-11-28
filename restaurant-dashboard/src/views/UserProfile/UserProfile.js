@@ -153,7 +153,8 @@ class UserProfile extends React.Component {
             wednesday: response.data.hours.wednesday,
             thursday: response.data.hours.thursday,
             friday: response.data.hours.friday,
-            saturday: response.data.hours.saturday
+            saturday: response.data.hours.saturday,
+            id: response.data.id
           });
         } else {
             this.setState({
@@ -166,6 +167,7 @@ class UserProfile extends React.Component {
               state: response.data.state,
               country: response.data.country,
               email: response.data.email,
+              id: response.data.id
             });
         }
       }).catch(error =>{
@@ -368,7 +370,29 @@ onSaturdayEndModChange = e => {
 
 onFileUpload = e => {
   console.log(e.target.files[0]);
+  console.log(this.state.id)
   //update image in firebase storage
+  let imageRef = firebase.storage().ref().child(`images/${this.state.id}`);
+  let file = e.target.files[0];
+  imageRef.put(file).then(snapshot => {
+    console.log(snapshot);
+    imageRef.getDownloadURL().then(url => {
+      axios({
+        method:"POST",
+        url:`http://localhost:8080/restaurantOrders/restaurants/${this.state.id}/newUrl`,
+        data: {
+          imageUrl: url
+        }
+      }).then(response => {
+        this.setState({imageUrl: url})
+      }).catch(error => {
+        console.log(error);
+      })
+    })
+    
+  }).catch(error => {
+    console.log(error);
+  })
   //update restaurant imageUrl in firestore
   //update state with new url
 }
@@ -388,7 +412,7 @@ onFileUpload = e => {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <div style={{display: "flex", flexDirection:"row", justifyContent: "center"}}>
-                    <Avatar src={this.state.imageUrl}/>
+                    <Avatar src={this.state.imageUrl} style={{width: "7rem", height: "7rem"}}/>
                     <input type="file" onChange={this.onFileUpload}/>
                   </div>
                 </GridItem>

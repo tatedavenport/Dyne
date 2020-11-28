@@ -15,6 +15,10 @@ import styles from "assets/jss/material-dashboard-react/components/tableStyle.js
 
 class CustomTable extends React.Component {
 
+  onRowClick = key => {
+    console.log(key)
+  }
+
   render() {
     return (
       <div className={this.props.classes.tableResponsive}>
@@ -38,7 +42,7 @@ class CustomTable extends React.Component {
           <TableBody>
             {this.props.tableData.map((prop, key) => {
               return (
-                <TableRow key={key} className={this.props.classes.tableBodyRow}>
+                <TableRow id={key} key={key} className={this.props.classes.tableBodyRow} onClick={() => this.props.onRowClick(key)}>
                   {prop.map((prop, key) => {
                     return (
                       <TableCell className={this.props.classes.tableCell} key={key}>

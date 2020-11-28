@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const firestore = require('../index').myFirestore;
@@ -230,6 +231,31 @@ router.get('/restaurants/:restID', async (req, res) => {
     }).catch(error =>{
         console.log(error);
     }) 
+});
+
+router.post('/restaurants/:restID/newUrl', async(req, res) => {
+    firestore.collection('restaurants').doc(req.params.restID).update({imageUrl: req.body.imageUrl}).then(response => {
+        res.send('done');
+    }).catch(error => {
+        console.log(error);
+        res.status(400);
+        res.send(error);
+    })
+})
+
+router.get('/restaurants/:restID/orders/:orderID', async (req, res) => {
+    console.log('hit')
+    admin.auth().verifyIdToken(req.params.restID).then(decodedToken => {
+        firestore.collection('restaurants').doc(decodedToken.uid).collection('orders').doc(req.params.orderID).get().then(doc => {
+            res.send({id: doc.id, data: doc.data()});
+        }).catch(error => {
+            console.log(error);
+            res.status(400);
+            res.send(error);
+        })
+    }).catch(error => {
+        console.log(error);
+    })
 });
 
 module.exports = router;

@@ -32,6 +32,7 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 firebase.auth();
 firebase.storage();
+firebase.firestore();
 
 const hist = createBrowserHistory();
 
