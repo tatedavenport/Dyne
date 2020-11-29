@@ -14,6 +14,7 @@ class RestaurantMenuVC: UIViewController {
     var restaurant: Restaurant?
     var name: String = ""
     var foodItems: [FoodItem]?
+    var cart: [FoodItem] = []
     
     // MARK: Interface
     @IBOutlet weak var menuTableView: UITableView!
@@ -45,6 +46,12 @@ class RestaurantMenuVC: UIViewController {
             navigationController.pushViewController(restaurantVC, animated: true)
         }
 
+    @IBAction func viewOrderWasPressed(_ sender: Any) {
+        if let nav = self.navigationController,
+           let restaurant = restaurant{
+            CartVC.present(for: restaurant, foodItems: cart, location: "Table 17", in: nav)
+        }
+    }
 }
 
 extension RestaurantMenuVC: UITableViewDelegate, UITableViewDataSource {
@@ -61,6 +68,14 @@ extension RestaurantMenuVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let item = foodItems?[indexPath.row] {
+            cart.append(item)
+        }
     }
     
     

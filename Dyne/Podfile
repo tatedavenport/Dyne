@@ -8,4 +8,5 @@ target 'Dyne' do
   # Pods for Dyne
   pod 'SwiftyJSON'
   pod 'Alamofire'
+  pod 'QRCodeReader.swift'
 end
