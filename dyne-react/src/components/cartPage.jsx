@@ -18,11 +18,15 @@ class CartPage extends Component {
   render() {
     const postOrder = () => {
       const restaurant_id = this.state.restID;
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+      }
       Axios.post(
         "http://localhost:8080/restaurants/" + restaurant_id + "/orders",
         {
           name: "testUser",
           foodItems: this.state.order,
+          tableIdentifier: getRandomInt(20),
         }
       ).then(function (response) {
         console.log(response);
