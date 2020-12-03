@@ -7,7 +7,6 @@ import Tab from "@material-ui/core/Tab";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
-import Table from "components/Table/Table.js";
 
 import styles from "assets/jss/material-dashboard-react/components/customTabsStyle.js";
 

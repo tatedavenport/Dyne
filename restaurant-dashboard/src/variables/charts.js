@@ -1,19 +1,12 @@
-// ##############################
-// // // javascript library for creating charts
-// #############################
 var Chartist = require("chartist");
 
-// ##############################
-// // // variables used to create animation on charts
-// #############################
+
 var delays = 80,
   durations = 500;
 var delays2 = 80,
   durations2 = 500;
 
-// ##############################
-// // // Daily Sales
-// #############################
+
 
 const dailySalesChart = {
   data: {
@@ -25,7 +18,7 @@ const dailySalesChart = {
       tension: 0
     }),
     low: 0,
-    high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    high: 50, 
     chartPadding: {
       top: 0,
       right: 0,
@@ -33,7 +26,7 @@ const dailySalesChart = {
       left: 0
     }
   },
-  // for animation
+
   animation: {
     draw: function(data) {
       if (data.type === "line" || data.type === "area") {
@@ -65,9 +58,7 @@ const dailySalesChart = {
   }
 };
 
-// ##############################
-// // // Email Subscriptions
-// #############################
+
 
 const emailsSubscriptionChart = {
   data: {
@@ -130,9 +121,7 @@ const emailsSubscriptionChart = {
   }
 };
 
-// ##############################
-// // // Completed Tasks
-// #############################
+
 
 const completedTasksChart = {
   data: {
@@ -144,7 +133,7 @@ const completedTasksChart = {
       tension: 0
     }),
     low: 0,
-    high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    high: 1000, 
     chartPadding: {
       top: 0,
       right: 0,

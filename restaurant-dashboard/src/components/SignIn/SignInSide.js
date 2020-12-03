@@ -13,7 +13,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, createMuiTheme } from '@material-ui/core/styles';
 import { firebase } from '../../index';
-import axios from 'axios';
 
 
 const theme = createMuiTheme({

@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-// @material-ui/core components
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-// core components
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import CustomTable from "components/CustomTable/CustomTable.js";
@@ -10,13 +8,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import { firebase } from "../../index.js";
 import axios from 'axios';
-import { render } from "react-dom";
 import OrderTabs from "components/OrderTabs/OrderTabs.js";
 import BugReport from "@material-ui/icons/BugReport";
-import Tasks from "components/Tasks/Tasks.js";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
-import { bugs, website, server } from "variables/general.js";
 import { Backdrop, Button, Typography } from "@material-ui/core";
 
 const styles = {
