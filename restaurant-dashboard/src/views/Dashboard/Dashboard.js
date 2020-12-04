@@ -26,8 +26,8 @@ export default function Dashboard() {
   const classes = useStyles();
   return (
     <div>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
+        <div style={{display: "flex", justifyContent:"center", alignItems: "center", flexDirection: "column"}}>
+        <Card style={{width: "40%"}}>
           <Card chart>
             <CardHeader color="success">
               <ChartistGraph
@@ -53,8 +53,8 @@ export default function Dashboard() {
               </div>
             </CardFooter>
           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        </Card>
+        <Card style={{width: "40%"}}>
           <Card chart>
             <CardHeader color="warning">
               <ChartistGraph
@@ -76,8 +76,8 @@ export default function Dashboard() {
               </div>
             </CardFooter>
           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        </Card>
+        <Card style={{width: "40%"}}>
           <Card chart>
             <CardHeader color="danger">
               <ChartistGraph
@@ -98,8 +98,8 @@ export default function Dashboard() {
               </div>
             </CardFooter>
           </Card>
-        </GridItem>
-      </GridContainer>
+        </Card>
+        </div>
     </div>
   );
 }

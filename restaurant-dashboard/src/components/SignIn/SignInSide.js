@@ -5,7 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
+import EcoIcon from '@material-ui/icons/Eco';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -20,12 +20,16 @@ const theme = createMuiTheme({
       primary: {
         main: '#28a745',
       },
+      secondary: {
+        main: '#00acc1'
+      }
     },
   });
 
 const styles = {
   root: {
     height: '100vh',
+    width: '100vw'
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -43,7 +47,7 @@ const styles = {
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: "#00acc1",
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -91,11 +95,11 @@ class SignInSide extends React.Component {
         return (
             <Grid container component="main" className={this.props.classes.root}>
                 <CssBaseline />
-                <Grid item xs={false} sm={4} md={7} className={this.props.classes.image} />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <div style={{display: "flex", justifyContent: "center", width: "100%", height: "100%"}}>
+                <Grid item xs={6} sm={6} md={6} component={Paper} elevation={6} square>
                     <div className={this.props.classes.paper}>
                     <Avatar className={this.props.classes.avatar}>
-                        <LockOutlinedIcon />
+                        <EcoIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
@@ -136,26 +140,20 @@ class SignInSide extends React.Component {
                         color="primary"
                         className={this.props.classes.submit}
                         onClick={this.handleSubmit}
+                        style={{backgroundColor: "#00acc1"}}
                         >
                         Sign In
                         </Button>
                         <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                            Forgot password?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                            {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
                         </Grid>
                         <Box mt={5}>
                         </Box>
                     </form>
                     </div>
                 </Grid>
+                </div>
+                {//<Grid item xs={false} sm={4} md={7} className={this.props.classes.image} />
+                }
             </Grid>
         );
     };
